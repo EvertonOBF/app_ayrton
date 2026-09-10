@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Científico - SESESC 2026</title>
+    <title>Científico - SECESC 2026</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,20 +11,21 @@
     
     <style>
         :root {
-            /* Nova Paleta Clara para integrar com o fundo branco da logo */
-            --bg-color: #ffffff;
-            --card-bg: #ffffff;
-            --card-border: #e2e8f0;
-            --primary: #e31e24; /* Vermelho Espaço Aberto */
-            --primary-glow: rgba(227, 30, 36, 0.15);
-            --accent: #475569; /* Cinza Escuro */
-            --silver-dark: #94a3b8;
+            /* Paleta extraída da marca SECESC */
+            --secesc-red: #d91b24;
+            --secesc-orange: #f96332;
+            --secesc-dark: #1b2028;
+            --secesc-blue-bg: #e2eff5;
+            
+            --bg-card: rgba(255, 255, 255, 0.94);
+            --card-border: rgba(217, 27, 36, 0.2);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --input-bg: #f8fafc;
+            
             --success: #10b981;
             --danger: #ef4444;
             --warning: #f59e0b;
-            --text: #0f172a; /* Texto quase preto */
-            --text-muted: #64748b;
-            --input-bg: #f8fafc;
         }
 
         * {
@@ -34,42 +35,133 @@
             font-family: 'Outfit', sans-serif;
         }
 
+        /* Fundo Animado com Cores e Polígonos Geométricos do SECESC */
         body {
-            background: var(--bg-color);
-            color: var(--text);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 30px 20px;
             font-size: 18px;
-            overflow-x: hidden;
             position: relative;
+            overflow-x: hidden;
+            background: linear-gradient(-45deg, #dbeafe, #f8fafc, #ffe4e6, #e0f2fe);
+            background-size: 400% 400%;
+            animation: gradientBg 14s ease infinite;
         }
 
-        /* Logo fixo no canto superior esquerdo integrado ao fundo branco */
+        @keyframes gradientBg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Camada de Polígonos e Formas Geométricas em Movimento */
+        .bg-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .polygon {
+            position: absolute;
+            opacity: 0.25;
+            filter: blur(1px);
+            animation: floatShape 18s infinite ease-in-out;
+        }
+
+        .poly-1 {
+            top: 10%;
+            left: 5%;
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(135deg, var(--secesc-red), var(--secesc-orange));
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+            animation-duration: 20s;
+        }
+
+        .poly-2 {
+            bottom: 15%;
+            right: 8%;
+            width: 240px;
+            height: 240px;
+            background: linear-gradient(135deg, #38bdf8, var(--secesc-red));
+            clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%);
+            animation-duration: 25s;
+            animation-delay: -5s;
+        }
+
+        .poly-3 {
+            top: 60%;
+            left: 12%;
+            width: 140px;
+            height: 140px;
+            background: var(--secesc-orange);
+            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+            animation-duration: 16s;
+            animation-delay: -2s;
+        }
+
+        .poly-4 {
+            top: 15%;
+            right: 15%;
+            width: 120px;
+            height: 120px;
+            background: var(--secesc-red);
+            clip-path: polygon(0% 15%, 15% 0%, 100% 85%, 85% 100%);
+            animation-duration: 22s;
+            animation-delay: -8s;
+        }
+
+        @keyframes floatShape {
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+            50% { transform: translateY(-35px) rotate(15deg) scale(1.08); }
+        }
+
+        /* Logo da Instituição no topo externo (canto superior esquerdo) */
         .app-logo {
             position: fixed;
-            top: 25px;
-            left: 25px;
-            height: 120px; /* Altere tamanho da imagem */
+            top: 35px;
+            left: 35px;
+            height: 150px;
             width: auto;
             object-fit: contain;
             z-index: 100;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
         }
 
+        /* Cartão Central (Efeito Vidro / Glassmorphism) */
         .game-container {
             width: 100%;
-            max-width: 1000px;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 24px;
+            max-width: 950px;
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 2px solid #ffffff;
+            border-radius: 28px;
             padding: 40px 45px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 20px 50px rgba(27, 32, 40, 0.12);
             position: relative;
+            z-index: 10;
         }
 
-        /* Animações */
+        /* Logo/Selo do SECESC no canto superior direito interno do Cartão */
+        .card-corner-logo {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            width: 95px; /* Altere aqui o tamanho da imagem */
+            height: 95px;
+            object-fit: contain;
+            border-radius: 50%;
+            z-index: 5;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1));
+        }
+
         .screen {
             display: none;
             animation: fadeIn 0.35s ease-out forwards;
@@ -85,27 +177,25 @@
         }
 
         /* Tipografia */
-        h1, h2, h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            text-align: center;
-        }
-
         h1 {
-            font-size: 3rem;
-            color: var(--text);
-            margin-bottom: 8px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.8rem;
+            color: var(--secesc-dark);
+            text-align: center;
+            margin-bottom: 6px;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             font-weight: 800;
+            padding-right: 50px; /* Evita sobreposição com o selo */
+            padding-left: 50px;
         }
 
         .subtitle {
             text-align: center;
-            color: var(--accent);
+            color: var(--text-muted);
             margin-bottom: 12px;
-            font-size: 1.35rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
+            font-size: 1.25rem;
+            font-weight: 600;
         }
 
         /* Slogan */
@@ -113,16 +203,15 @@
             text-align: center;
             display: block;
             margin: 0 auto 30px auto;
-            padding: 6px 20px;
-            background: rgba(227, 30, 36, 0.08);
-            border: 1px solid rgba(227, 30, 36, 0.2);
+            padding: 8px 22px;
+            background: linear-gradient(90deg, rgba(217, 27, 36, 0.08), rgba(249, 99, 50, 0.08));
+            border: 1px solid rgba(217, 27, 36, 0.25);
             border-radius: 50px;
-            color: var(--primary);
+            color: var(--secesc-red);
             font-style: italic;
-            font-size: 1.2rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            width: 100%;
+            font-size: 1.15rem;
+            font-weight: 700;
+            width: fit-content;
         }
 
         /* Formulários e Inputs */
@@ -133,9 +222,9 @@
         .input-group label {
             display: block;
             margin-bottom: 8px;
-            color: var(--accent);
+            color: var(--secesc-dark);
             font-weight: 700;
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             text-transform: uppercase;
             letter-spacing: 0.8px;
         }
@@ -144,28 +233,28 @@
             width: 100%;
             padding: 16px 20px;
             background: var(--input-bg);
-            border: 1px solid #cbd5e1;
+            border: 2px solid #cbd5e1;
             border-radius: 14px;
-            color: var(--text);
-            font-size: 1.35rem;
+            color: var(--text-main);
+            font-size: 1.25rem;
             font-weight: 600;
             transition: all 0.3s;
         }
 
         .input-group input:focus {
             outline: none;
-            border-color: var(--primary);
+            border-color: var(--secesc-orange);
             background: #ffffff;
-            box-shadow: 0 0 0 4px var(--primary-glow);
+            box-shadow: 0 0 0 4px rgba(249, 99, 50, 0.15);
         }
 
-        /* Botões */
+        /* Botões com o Gradiente SECESC */
         .btn {
             width: 100%;
             padding: 18px 24px;
             border: none;
             border-radius: 16px;
-            font-size: 1.35rem;
+            font-size: 1.3rem;
             font-weight: 800;
             cursor: pointer;
             transition: all 0.25s ease;
@@ -179,37 +268,38 @@
         }
 
         .btn-primary {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--secesc-red) 0%, var(--secesc-orange) 100%);
             color: #fff;
-            box-shadow: 0 4px 15px var(--primary-glow);
+            box-shadow: 0 6px 20px rgba(217, 27, 36, 0.3);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            background: #b91c1c;
-            box-shadow: 0 6px 20px rgba(227, 30, 36, 0.3);
+            box-shadow: 0 10px 25px rgba(217, 27, 36, 0.4);
+            filter: brightness(1.05);
         }
 
         /* Cartão do Jogador */
         .player-turn-card {
             text-align: center;
             padding: 35px 25px;
-            background: var(--input-bg);
+            background: rgba(255, 255, 255, 0.7);
             border-radius: 20px;
-            border: 2px dashed var(--primary);
+            border: 2px dashed var(--secesc-orange);
             margin-bottom: 28px;
         }
 
         .player-turn-card p {
-            font-size: 1.35rem;
+            font-size: 1.3rem;
             font-weight: 600;
         }
 
         .player-name-highlight {
-            font-size: 3.4rem;
-            color: var(--primary);
+            font-size: 3.2rem;
+            color: var(--secesc-red);
             font-weight: 800;
             margin: 14px 0;
+            text-shadow: 1px 1px 0px rgba(0,0,0,0.05);
         }
 
         /* Quiz Interface */
@@ -219,43 +309,38 @@
             align-items: center;
             margin-bottom: 24px;
             padding-bottom: 16px;
-            border-bottom: 1px solid var(--card-border);
+            border-bottom: 2px solid #e2e8f0;
         }
 
         .badge-player {
-            background: rgba(227, 30, 36, 0.1);
-            color: var(--primary);
+            background: linear-gradient(135deg, rgba(217, 27, 36, 0.1), rgba(249, 99, 50, 0.1));
+            color: var(--secesc-red);
             padding: 10px 22px;
             border-radius: 24px;
             font-weight: 800;
             font-size: 1.2rem;
-            border: 1px solid rgba(227, 30, 36, 0.2);
+            border: 1px solid rgba(217, 27, 36, 0.3);
         }
 
         .timer-box {
             display: flex;
             align-items: center;
             gap: 10px;
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
+            background: #fff;
+            color: var(--secesc-red);
             padding: 10px 24px;
             border-radius: 24px;
             font-family: 'Space Grotesk', monospace;
-            font-size: 1.75rem;
+            font-size: 1.7rem;
             font-weight: 800;
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); }
+            border: 2px solid var(--secesc-red);
+            box-shadow: 0 4px 12px rgba(217, 27, 36, 0.15);
         }
 
         .module-tag {
             display: inline-block;
-            font-size: 1.15rem;
-            color: var(--primary);
+            font-size: 1.1rem;
+            color: var(--secesc-orange);
             text-transform: uppercase;
             font-weight: 800;
             letter-spacing: 1px;
@@ -263,12 +348,12 @@
         }
 
         .question-text {
-            font-size: 1.65rem;
-            line-height: 1.5;
+            font-size: 1.6rem;
+            line-height: 1.45;
             margin-bottom: 28px;
-            font-weight: 600;
+            font-weight: 700;
             text-align: left;
-            color: var(--text);
+            color: var(--secesc-dark);
         }
 
         .options-grid {
@@ -279,11 +364,11 @@
 
         .option-btn {
             background: #ffffff;
-            border: 1px solid #cbd5e1;
+            border: 2px solid #e2e8f0;
             border-radius: 16px;
             padding: 18px 22px;
-            color: var(--text);
-            font-size: 1.25rem;
+            color: var(--text-main);
+            font-size: 1.2rem;
             font-weight: 600;
             text-align: left;
             cursor: pointer;
@@ -295,14 +380,14 @@
         }
 
         .option-btn:hover {
-            background: #fef2f2;
-            border-color: var(--primary);
+            border-color: var(--secesc-orange);
+            background: #fff7f5;
             transform: translateX(6px);
         }
 
         .option-letter {
             background: #f1f5f9;
-            color: var(--accent);
+            color: var(--secesc-dark);
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -310,13 +395,13 @@
             align-items: center;
             justify-content: center;
             font-weight: 800;
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             flex-shrink: 0;
             transition: all 0.2s ease;
         }
 
         .option-btn:hover .option-letter {
-            background: var(--primary);
+            background: var(--secesc-red);
             color: #fff;
         }
 
@@ -330,19 +415,18 @@
 
         .ranking-item {
             background: #ffffff;
-            border: 1px solid #e2e8f0;
+            border: 2px solid #e2e8f0;
             border-radius: 18px;
             padding: 22px 28px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
         }
 
         .ranking-item.pos-1 {
             border-color: var(--warning);
             background: #fffbeb;
-            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.15);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.2);
         }
 
         .rank-pos {
@@ -360,11 +444,12 @@
         .rank-name {
             font-size: 1.5rem;
             font-weight: 800;
+            color: var(--secesc-dark);
             margin-bottom: 4px;
         }
 
         .rank-details {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             color: var(--text-muted);
         }
 
@@ -376,7 +461,7 @@
             display: inline-block;
             padding: 8px 16px;
             border-radius: 20px;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: 800;
             margin-bottom: 6px;
         }
@@ -397,13 +482,13 @@
             font-family: 'Space Grotesk', monospace;
             font-size: 1.4rem;
             font-weight: 800;
-            color: var(--accent);
+            color: var(--secesc-dark);
         }
 
         /* Gabarito Comentado */
         .feedback-details {
             margin-top: 35px;
-            border-top: 1px solid var(--card-border);
+            border-top: 2px solid #e2e8f0;
             padding-top: 25px;
         }
 
@@ -411,7 +496,7 @@
             font-size: 1.45rem;
             text-align: left;
             margin-bottom: 20px;
-            color: var(--primary);
+            color: var(--secesc-red);
         }
 
         .feedback-item {
@@ -419,7 +504,7 @@
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 18px;
-            border-left: 5px solid #cbd5e1;
+            border-left: 6px solid #cbd5e1;
             border-top: 1px solid #e2e8f0;
             border-right: 1px solid #e2e8f0;
             border-bottom: 1px solid #e2e8f0;
@@ -429,20 +514,20 @@
         .feedback-item.wrong { border-left-color: var(--danger); }
 
         .feedback-player {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 800;
-            color: var(--text);
+            color: var(--secesc-dark);
             margin-bottom: 8px;
         }
 
         .feedback-q {
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             line-height: 1.5;
             margin-bottom: 10px;
         }
 
         .feedback-ans {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             margin-top: 6px;
         }
 
@@ -458,11 +543,12 @@
         }
 
         @media (max-width: 768px) {
-            body { padding-top: 90px; }
-            .app-logo { height: 45px; top: 15px; left: 15px; }
-            .game-container { padding: 30px 20px; }
-            h1 { font-size: 2rem; }
-            .question-text { font-size: 1.35rem; }
+            body { padding-top: 100px; }
+            .app-logo { height: 50px; top: 15px; left: 15px; }
+            .card-corner-logo { width: 60px; height: 60px; top: 15px; right: 15px; }
+            .game-container { padding: 25px 18px; }
+            h1 { font-size: 1.8rem; padding-left: 0; padding-right: 0; margin-top: 20px; }
+            .question-text { font-size: 1.3rem; }
             .ranking-item { flex-direction: column; align-items: flex-start; gap: 12px; }
             .rank-status { text-align: left; }
         }
@@ -470,14 +556,25 @@
 </head>
 <body>
 
-    <!-- LOGO FORA DO CONTAINER (CANTO SUPERIOR ESQUERDO DA PÁGINA) -->
+    <!-- Fundo de polígonos geométricos animados -->
+    <div class="bg-shapes">
+        <div class="polygon poly-1"></div>
+        <div class="polygon poly-2"></div>
+        <div class="polygon poly-3"></div>
+        <div class="polygon poly-4"></div>
+    </div>
+
+    <!-- LOGO INSTITUCIONAL FIXO NO CANTO SUPERIOR ESQUERDO -->
     <img src="logo.png" alt="Logo Colégio Espaço Aberto" class="app-logo">
 
     <div class="game-container">
 
+        <!-- LOGO SECESC NO CANTO SUPERIOR DIREITO DO CARTÃO -->
+        <img src="secesc.png" alt="Selo SECESC" class="card-corner-logo">
+
         <!-- TELA 1: CADASTRO DOS JOGADORES -->
         <div id="screen-setup" class="screen active">
-            <h1>Científico - SESESC 2026</h1>
+            <h1>Científico - SECESC 2026</h1>
             <p class="subtitle">2º ano - Colégio Espaço Aberto</p>
             <div class="slogan-badge">“Educação que transforma, conhecimento que impulsiona.”</div>
             
@@ -499,7 +596,7 @@
             </form>
         </div>
 
-        <!-- TELA 2: TRANSIÇÃO / PREPARAÇÃO DO JOGADOR -->
+        <!-- TELA 2: TRANSIÇÃO / PREPARAÇÃO -->
         <div id="screen-ready" class="screen">
             <h1>Preparado?</h1>
             <p class="subtitle">Cada participante responderá a 1 pergunta surpresa.</p>
