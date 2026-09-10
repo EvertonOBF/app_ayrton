@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfraGame - O Desafio da Infraestrutura</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0b132b 0%, #1c2541 50%, #0b132b 100%);
+            --card-bg: rgba(30, 41, 59, 0.85);
+            --card-border: rgba(255, 255, 255, 0.2);
+            --primary: #38bdf8;
+            --primary-glow: rgba(56, 189, 248, 0.4);
+            --accent: #c084fc;
+            --success: #34d399;
+            --danger: #fb7185;
+            --warning: #fbbf24;
+            --text: #ffffff;
+            --text-muted: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            font-size: 22px; /* Fonte base bastante ampliada */
+            overflow-x: hidden;
+        }
+
+        .game-container {
+            width: 100%;
+            max-width: 1200px; /* Largura máxima expandida para projeção */
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 2px solid var(--card-border);
+            border-radius: 28px;
+            padding: 50px 60px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(56, 189, 248, 0.2);
+            position: relative;
+        }
+
+        /* Animações */
+        .screen {
+            display: none;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Tipografia de Projetor */
+        h1, h2, h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 4rem; /* ~64px */
+            background: linear-gradient(to right, #38bdf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 45px;
+            font-size: 1.75rem; /* ~28px */
+            font-weight: 600;
+        }
+
+        /* Formulários e Inputs */
+        .input-group {
+            margin-bottom: 30px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 12px;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.5rem; /* ~24px */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 20px 24px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid var(--card-border);
+            border-radius: 16px;
+            color: #fff;
+            font-size: 1.6rem; /* ~25px */
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        /* Botões Gigantes */
+        .btn {
+            width: 100%;
+            padding: 22px 30px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.6rem; /* ~25px */
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0284c7, #2563eb);
+            color: #fff;
+            box-shadow: 0 6px 25px rgba(37, 99, 235, 0.5);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(37, 99, 235, 0.7);
+        }
+
+        .btn-accent {
+            background: linear-gradient(135deg, #9333ea, #c026d3);
+            color: #fff;
+            box-shadow: 0 6px 25px rgba(147, 51, 234, 0.5);
+        }
+
+        .btn-accent:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(147, 51, 234, 0.7);
+        }
+
+        /* Cartão do Jogador */
+        .player-turn-card {
+            text-align: center;
+            padding: 50px 30px;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 24px;
+            border: 3px dashed var(--primary);
+            margin-bottom: 35px;
+        }
+
+        .player-turn-card p {
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
+
+        .player-name-highlight {
+            font-size: 4.2rem; /* ~67px */
+            color: var(--primary);
+            font-weight: 800;
+            margin: 20px 0;
+            text-shadow: 0 0 25px var(--primary-glow);
+        }
+
+        /* Quiz Interface */
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--card-border);
+        }
+
+        .badge-player {
+            background: rgba(56, 189, 248, 0.2);
+            color: var(--primary);
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 1.5rem; /* ~24px */
+            border: 2px solid rgba(56, 189, 248, 0.4);
+        }
+
+        .timer-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(251, 113, 133, 0.2);
+            color: var(--danger);
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-family: 'Space Grotesk', monospace;
+            font-size: 2.2rem; /* ~35px */
+            font-weight: 800;
+            border: 2px solid rgba(251, 113, 133, 0.5);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+        }
+
+        .module-tag {
+            display: inline-block;
+            font-size: 1.35rem; /* ~21px */
+            color: var(--accent);
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-size: 2.1rem; /* ~33px para projeção clara */
+            line-height: 1.5;
+            margin-bottom: 35px;
+            font-weight: 600;
+            text-align: left;
+            color: #ffffff;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .option-btn {
+            background: rgba(15, 23, 42, 0.7);
+            border: 2px solid var(--card-border);
+            border-radius: 20px;
+            padding: 22px 28px;
+            color: var(--text);
+            font-size: 1.55rem; /* ~25px */
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            line-height: 1.45;
+        }
+
+        .option-btn:hover {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: var(--primary);
+            transform: translateX(8px);
+        }
+
+        .option-letter {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .option-btn:hover .option-letter {
+            background: var(--primary);
+            color: #0f172a;
+        }
+
+        /* Leaderboard / Ranking Projetado */
+        .ranking-list {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            margin: 35px 0;
+        }
+
+        .ranking-item {
+            background: rgba(15, 23, 42, 0.7);
+            border: 2px solid var(--card-border);
+            border-radius: 22px;
+            padding: 28px 35px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .ranking-item.pos-1 {
+            border-color: var(--warning);
+            background: rgba(251, 191, 36, 0.12);
+            box-shadow: 0 0 30px rgba(251, 191, 36, 0.25);
+        }
+
+        .rank-pos {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem; /* ~48px */
+            font-weight: 800;
+            width: 70px;
+        }
+
+        .rank-info {
+            flex-grow: 1;
+            padding: 0 25px;
+        }
+
+        .rank-name {
+            font-size: 1.85rem; /* ~30px */
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .rank-details {
+            font-size: 1.35rem; /* ~21px */
+            color: var(--text-muted);
+        }
+
+        .rank-status {
+            text-align: right;
+        }
+
+        .badge-status {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 1.3rem; /* ~21px */
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .badge-correct {
+            background: rgba(52, 211, 153, 0.25);
+            color: var(--success);
+            border: 2px solid rgba(52, 211, 153, 0.5);
+        }
+
+        .badge-wrong {
+            background: rgba(251, 113, 133, 0.25);
+            color: var(--danger);
+            border: 2px solid rgba(251, 113, 133, 0.5);
+        }
+
+        .rank-time {
+            font-family: 'Space Grotesk', monospace;
+            font-size: 1.7rem; /* ~27px */
+            font-weight: 800;
+            color: #fff;
+        }
+
+        /* Gabarito Comentado */
+        .feedback-details {
+            margin-top: 45px;
+            border-top: 2px solid var(--card-border);
+            padding-top: 30px;
+        }
+
+        .feedback-details h3 {
+            font-size: 1.8rem;
+            text-align: left;
+            margin-bottom: 25px;
+            color: var(--primary);
+        }
+
+        .feedback-item {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 22px;
+            border-left: 6px solid var(--card-border);
+        }
+
+        .feedback-item.correct { border-left-color: var(--success); }
+        .feedback-item.wrong { border-left-color: var(--danger); }
+
+        .feedback-player {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .feedback-q {
+            font-size: 1.35rem;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .feedback-ans {
+            font-size: 1.3rem;
+            margin-top: 8px;
+        }
+
+        .feedback-comment {
+            font-size: 1.25rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 18px 20px;
+            border-radius: 12px;
+            margin-top: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .game-container { padding: 30px 20px; }
+            h1 { font-size: 2.8rem; }
+            .question-text { font-size: 1.5rem; }
+            .ranking-item { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .rank-status { text-align: left; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        
+        <!-- TELA 1: CADASTRO DOS JOGADORES -->
+        <div id="screen-setup" class="screen active">
+            <h1>⚡ InfraGame</h1>
+            <p class="subtitle">O Desafio dos Modais & Infraestrutura Nacional</p>
+            
+            <form id="form-setup" onsubmit="startGame(event)">
+                <div class="input-group">
+                    <label for="player1">Participante 1</label>
+                    <input type="text" id="player1" placeholder="Digite o nome..." required autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <label for="player2">Participante 2</label>
+                    <input type="text" id="player2" placeholder="Digite o nome..." required autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <label for="player3">Participante 3</label>
+                    <input type="text" id="player3" placeholder="Digite o nome..." required autocomplete="off">
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Iniciar Desafio 🚀</button>
+            </form>
+        </div>
+
+        <!-- TELA 2: TRANSIÇÃO / PREPARAÇÃO DO JOGADOR -->
+        <div id="screen-ready" class="screen">
+            <h1>Preparado?</h1>
+            <p class="subtitle">Cada participante responderá a 1 pergunta surpresa.</p>
+            
+            <div class="player-turn-card">
+                <p>Vez do Participante:</p>
+                <div class="player-name-highlight" id="ready-player-name">Jogador</div>
+                <p style="color: var(--text-muted); font-size: 1.35rem;">
+                    ⏱️ O cronômetro começará imediatamente após clicar no botão abaixo.
+                </p>
+            </div>
+
+            <button class="btn btn-accent" onclick="startQuestionTurn()">Estou Pronto! Ver Pergunta ⏱️</button>
+        </div>
+
+        <!-- TELA 3: PERGUNTA & CRONÔMETRO -->
+        <div id="screen-quiz" class="screen">
+            <div class="quiz-header">
+                <div class="badge-player" id="quiz-player-badge">Jogador 1</div>
+                <div class="timer-box">
+                    <span>⏱️</span>
+                    <span id="timer-display">00.00s</span>
+                </div>
+            </div>
+
+            <div class="module-tag" id="module-tag">Módulo 1: Transportes</div>
+            <h2 class="question-text" id="question-text">Texto da pergunta aqui...</h2>
+
+            <div class="options-grid" id="options-container">
+                <!-- As opções serão injetadas via JS -->
+            </div>
+        </div>
+
+        <!-- TELA 4: RANKING FINAL -->
+        <div id="screen-ranking" class="screen">
+            <h1>🏆 Ranking Final</h1>
+            <p class="subtitle">Classificação por Respostas Corretas e Menor Tempo</p>
+
+            <div class="ranking-list" id="ranking-container">
+                <!-- Itens do Ranking injetados via JS -->
+            </div>
+
+            <div class="feedback-details">
+                <h3>📖 Gabarito Comentado das Perguntas Sorteadas</h3>
+                <div id="gabarito-container">
+                    <!-- Comentários injetados via JS -->
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="resetGame()" style="margin-top: 35px;">Jogar Novamente 🔄</button>
+        </div>
+
+    </div>
+
+    <script>
+        // BASE DE DADOS DE PERGUNTAS E GABARITO
+        const questionsDatabase = [
+            {
+                id: 1,
+                module: "Módulo 1: Transportes e Logística",
+                question: "Sobre a eficiência logística e o escoamento de cargas em um país com dimensões continentais, qual é a principal vantagem da diversificação e integração dos modais de transporte (rodoviário, ferroviário, hidroviário e portuário)?",
+                options: [
+                    { letter: "a", text: "Aumento dos custos operacionais no transbordo de mercadorias." },
+                    { letter: "b", text: "Centralização do escoamento de cargas em um único modal prioritário." },
+                    { letter: "c", text: "Otimização do tempo e custo de transporte, aumentando a competitividade das exportações." },
+                    { letter: "d", text: "Restrição da conectividade entre as regiões produtoras e os portos exportadores." }
+                ],
+                correct: "c",
+                explanation: "A integração modal (intermodalidade) reduz gargalos de transporte, diminui o frete e acelera o escoamento de safras e produtos industriais, tornando as exportações mais competitivas."
+            },
+            {
+                id: 2,
+                module: "Módulo 1: Transportes e Logística",
+                question: "No planejamento da mobilidade urbana nas grandes cidades, qual conjunto de medidas representa uma política eficiente de integração do sistema de transportes?",
+                options: [
+                    { letter: "a", text: "Priorização do transporte individual motorizado em detrimento do transporte coletivo." },
+                    { letter: "b", text: "Articulação integrada entre redes de metrôs, ônibus elétricos, trens metropolitanos e ciclovias." },
+                    { letter: "c", text: "Desativação de faixas e corredores exclusivos de ônibus para expandir o espaço de carros de passeio." },
+                    { letter: "d", text: "Substituição do transporte público de massa por incentivos à frota particular de veículos." }
+                ],
+                correct: "b",
+                explanation: "Políticas efetivas de mobilidade focam na integração tarifária e física entre modais coletivos (metrô, trem, ônibus) e ativos (ciclovias)."
+            },
+            {
+                id: 3,
+                module: "Módulo 2: Energia, Saneamento e Meio Ambiente",
+                question: "O conceito de \"transição energética\" é fundamental para o planejamento sustentável da matriz energética. Ele é caracterizado por:",
+                options: [
+                    { letter: "a", text: "Aumento do consumo e dependência de combustíveis fósseis, como carvão mineral e petróleo." },
+                    { letter: "b", text: "Substituição gradual de fontes de energia poluentes por fontes limpas e renováveis (solar, eólica, biomassa)." },
+                    { letter: "c", text: "Paralisação total do sistema de transmissão elétrica para racionamento urbano." },
+                    { letter: "d", text: "Eliminação de investimentos em tecnologias de geração de energia limpa." }
+                ],
+                correct: "b",
+                explanation: "Transição energética significa mudar a matriz energética em direção a fontes renováveis e descarbonizadas (solar, eólica, biomassa)."
+            },
+            {
+                id: 4,
+                module: "Módulo 2: Energia, Saneamento e Meio Ambiente",
+                question: "No âmbito da Gestão Ambiental Urbana e da infraestrutura de saneamento, qual é a principal função dos sistemas de drenagem urbana?",
+                options: [
+                    { letter: "a", text: "Realizar a captação e o tratamento de esgoto doméstico não tratado." },
+                    { letter: "b", text: "Promover a purificação da água para distribuição potável nas residências." },
+                    { letter: "c", text: "Gerenciar o escoamento das águas pluviais (da chuva), prevenindo e controlando enchentes e alagamentos." },
+                    { letter: "d", text: "Incinerar resíduos sólidos urbanos nos centros operacionais." }
+                ],
+                correct: "c",
+                explanation: "A drenagem previne alagamentos e enchentes ao direcionar o fluxo de água das chuvas de maneira segura no perímetro urbano."
+            },
+            {
+                id: 5,
+                module: "Módulo 3: Telecomunicações e Tecnologia",
+                question: "A expansão de redes digitais (como fibra óptica, 4G e 5G) é essencial para a Inclusão Digital. Como essa infraestrutura impacta diretamente a sociedade?",
+                options: [
+                    { letter: "a", text: "Limitando a conectividade apenas a grandes centros financeiros de alta renda." },
+                    { letter: "b", text: "Democratizando o acesso à informação, educação e serviços públicos em regiões remotas e periféricas." },
+                    { letter: "c", text: "Desativando redes públicas de internet em prol do atendimento estritamente privado." },
+                    { letter: "d", text: "Aumentando a barreira tarifária para o uso de tecnologias em comunidades de baixa renda." }
+                ],
+                correct: "b",
+                explanation: "Levar fibra óptica, 4G e 5G a áreas vulneráveis e distantes garante acesso equalitário a oportunidades digitais e serviços governamentais."
+            },
+            {
+                id: 6,
+                module: "Módulo 3: Telecomunicações e Tecnologia",
+                question: "Em uma Cidade Inteligente (Smart City), qual é o papel desempenhado pela infraestrutura de serviços digitais (Data Centers, IoT e Cibersegurança)?",
+                options: [
+                    { letter: "a", text: "Processar e proteger dados em tempo real para otimizar serviços urbanos como trânsito, iluminação e segurança pública." },
+                    { letter: "b", text: "Isolar a administração pública do contato com a população via plataformas digitais." },
+                    { letter: "c", text: "Reduzir a velocidade de processamento de informações do sistema de saúde e educação." },
+                    { letter: "d", text: "Substituir completamente a necessidade de infraestrutura física nas cidades." }
+                ],
+                correct: "a",
+                explanation: "Cidades Inteligentes dependem de coleta e análise de dados seguras para automatizar e otimizar serviços públicos urbanos."
+            },
+            {
+                id: 7,
+                module: "Módulo 4: Gestão, Economia e Impacto Social",
+                question: "As Parcerias Público-Privadas (PPPs) e concessões são modelos amplamente utilizados para viabilizar obras de infraestrutura. Qual é a principal característica de uma PPP?",
+                options: [
+                    { letter: "a", text: "Privatização definitiva de todos os ativos estatais sem contrapartida do poder público." },
+                    { letter: "b", text: "Financiamento 100% estatal sem participação ou operação da iniciativa privada." },
+                    { letter: "c", text: "Colaboração contratual entre o Estado e a iniciativa privada para financiamento, execução e gestão de serviços ou obras públicas." },
+                    { letter: "d", text: "Proibição de novos investimentos privados no setor público de habitação e saúde." }
+                ],
+                correct: "c",
+                explanation: "As PPPs alinham o capital e a eficiência operacional da iniciativa privada com as diretrizes e supervisão do Estado."
+            },
+            {
+                id: 8,
+                module: "Módulo 4: Gestão, Economia e Impacto Social",
+                question: "O termo \"Custo País\" refere-se ao conjunto de ineficiências e gargalos estruturais que encarecem a produção e os serviços locais. De que forma investimentos robustos em infraestrutura afetam o Custo País?",
+                options: [
+                    { letter: "a", text: "Elevam o Custo País ao aumentar as perdas logísticas e a burocracia dos transportes." },
+                    { letter: "b", text: "Reduzem o Custo País ao aumentar a eficiência logística, diminuir desperdícios e atrair investimentos estrangeiros." },
+                    { letter: "c", text: "Não causam nenhum efeito na economia interna ou na competitividade das empresas nacionais." },
+                    { letter: "d", text: "Estagnam o mercado interno por reduzirem a circulação de riquezas regionais." }
+                ],
+                correct: "b",
+                explanation: "Infraestrutura moderna diminui custos de transporte, energia e comunicação, barateando a produção nacional e reduzindo o Custo País."
+            }
+        ];
+
+        // ESTADO DO JOGO
+        let players = [];
+        let selectedQuestions = [];
+        let currentTurnIndex = 0;
+        let gameResults = [];
+        
+        // CRONÔMETRO
+        let timerInterval = null;
+        let startTime = 0;
+
+        // NAVEGAÇÃO ENTRE TELAS
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // INICIAR JOGO
+        function startGame(e) {
+            e.preventDefault();
+            
+            const p1 = document.getElementById('player1').value.trim();
+            const p2 = document.getElementById('player2').value.trim();
+            const p3 = document.getElementById('player3').value.trim();
+
+            if (!p1 || !p2 || !p3) return;
+
+            players = [p1, p2, p3];
+            gameResults = [];
+            currentTurnIndex = 0;
+
+            // Seleção automática e aleatória de 3 perguntas distintas da base
+            const shuffled = [...questionsDatabase].sort(() => 0.5 - Math.random());
+            selectedQuestions = shuffled.slice(0, 3);
+
+            preparePlayerTurn();
+        }
+
+        // TELA DE TRANSIÇÃO PARA CADA JOGADOR
+        function preparePlayerTurn() {
+            if (currentTurnIndex >= players.length) {
+                renderRanking();
+                return;
+            }
+
+            document.getElementById('ready-player-name').innerText = players[currentTurnIndex];
+            showScreen('screen-ready');
+        }
+
+        // COMEÇAR O TURNO (INICIAR PERGUNTA + RELÓGIO)
+        function startQuestionTurn() {
+            showScreen('screen-quiz');
+
+            const currentQuestion = selectedQuestions[currentTurnIndex];
+            const currentPlayer = players[currentTurnIndex];
+
+            // Renderizar Pergunta
+            document.getElementById('quiz-player-badge').innerText = `Vez de: ${currentPlayer}`;
+            document.getElementById('module-tag').innerText = currentQuestion.module;
+            document.getElementById('question-text').innerText = currentQuestion.question;
+
+            // Renderizar Opções
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            currentQuestion.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerHTML = `
+                    <span class="option-letter">${opt.letter.toUpperCase()}</span>
+                    <span>${opt.text}</span>
+                `;
+                btn.onclick = () => handleAnswer(opt.letter);
+                optionsContainer.appendChild(btn);
+            });
+
+            // Iniciar Cronômetro
+            startTimer();
+        }
+
+        // LÓGICA DO CRONÔMETRO
+        function startTimer() {
+            startTime = performance.now();
+            const timerDisplay = document.getElementById('timer-display');
+            
+            function update() {
+                const now = performance.now();
+                const elapsed = (now - startTime) / 1000;
+                timerDisplay.innerText = elapsed.toFixed(2) + 's';
+                timerInterval = requestAnimationFrame(update);
+            }
+            timerInterval = requestAnimationFrame(update);
+        }
+
+        function stopTimer() {
+            cancelAnimationFrame(timerInterval);
+            const endTime = performance.now();
+            return (endTime - startTime) / 1000;
+        }
+
+        // PROCESSAR RESPOSTA
+        function handleAnswer(selectedLetter) {
+            const timeTaken = stopTimer();
+            const currentQuestion = selectedQuestions[currentTurnIndex];
+            const currentPlayer = players[currentTurnIndex];
+            const isCorrect = selectedLetter.toLowerCase() === currentQuestion.correct.toLowerCase();
+
+            // Armazenamento Interno dos Dados
+            gameResults.push({
+                player: currentPlayer,
+                question: currentQuestion,
+                selectedOption: selectedLetter,
+                isCorrect: isCorrect,
+                time: timeTaken
+            });
+
+            currentTurnIndex++;
+            preparePlayerTurn();
+        }
+
+        // RENDERIZAR RANKING E RESULTADOS
+        function renderRanking() {
+            showScreen('screen-ranking');
+
+            // Ordenação do Ranking: 1º Acertos | 2º Menor tempo
+            const sortedResults = [...gameResults].sort((a, b) => {
+                if (a.isCorrect !== b.isCorrect) {
+                    return a.isCorrect ? -1 : 1;
+                }
+                return a.time - b.time;
+            });
+
+            const rankingContainer = document.getElementById('ranking-container');
+            rankingContainer.innerHTML = '';
+
+            const icons = ['🥇', '🥈', '🥉'];
+
+            sortedResults.forEach((res, index) => {
+                const item = document.createElement('div');
+                item.className = `ranking-item ${index === 0 ? 'pos-1' : ''}`;
+
+                item.innerHTML = `
+                    <div class="rank-pos">${icons[index] || `#${index + 1}`}</div>
+                    <div class="rank-info">
+                        <div class="rank-name">${res.player}</div>
+                        <div class="rank-details">${res.question.module}</div>
+                    </div>
+                    <div class="rank-status">
+                        <span class="badge-status ${res.isCorrect ? 'badge-correct' : 'badge-wrong'}">
+                            ${res.isCorrect ? '✅ Acertou' : '❌ Errou'}
+                        </span>
+                        <div class="rank-time">⏱️ ${res.time.toFixed(2)}s</div>
+                    </div>
+                `;
+                rankingContainer.appendChild(item);
+            });
+
+            // Renderizar Gabarito Comentado
+            const gabaritoContainer = document.getElementById('gabarito-container');
+            gabaritoContainer.innerHTML = '';
+
+            gameResults.forEach((res) => {
+                const item = document.createElement('div');
+                item.className = `feedback-item ${res.isCorrect ? 'correct' : 'wrong'}`;
+
+                item.innerHTML = `
+                    <div class="feedback-player">👤 ${res.player} (${res.isCorrect ? 'Acertou em ' + res.time.toFixed(2) + 's' : 'Errou em ' + res.time.toFixed(2) + 's'})</div>
+                    <div class="feedback-q"><strong>Pergunta:</strong> ${res.question.question}</div>
+                    <div class="feedback-ans">
+                        <strong>Sua Resposta:</strong> (${res.selectedOption.toUpperCase()}) | 
+                        <strong>Resposta Correta:</strong> (${res.question.correct.toUpperCase()})
+                    </div>
+                    <div class="feedback-comment">
+                        <strong>💡 Comentário:</strong> ${res.question.explanation}
+                    </div>
+                `;
+                gabaritoContainer.appendChild(item);
+            });
+        }
+
+        // REINICIAR O JOGO
+        function resetGame() {
+            document.getElementById('form-setup').reset();
+            showScreen('screen-setup');
+        }
+    </script>
+</body>
+</html>
