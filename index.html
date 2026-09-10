@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InfraGame - O Desafio da Infraestrutura</title>
+    <title>Científico - SESESC 2026</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,17 +11,20 @@
     
     <style>
         :root {
-            --bg-gradient: linear-gradient(135deg, #0b132b 0%, #1c2541 50%, #0b132b 100%);
-            --card-bg: rgba(30, 41, 59, 0.85);
-            --card-border: rgba(255, 255, 255, 0.18);
-            --primary: #38bdf8;
-            --primary-glow: rgba(56, 189, 248, 0.35);
-            --accent: #c084fc;
-            --success: #34d399;
-            --danger: #fb7185;
-            --warning: #fbbf24;
-            --text: #ffffff;
-            --text-muted: #cbd5e1;
+            /* Nova Paleta Clara para integrar com o fundo branco da logo */
+            --bg-color: #ffffff;
+            --card-bg: #ffffff;
+            --card-border: #e2e8f0;
+            --primary: #e31e24; /* Vermelho Espaço Aberto */
+            --primary-glow: rgba(227, 30, 36, 0.15);
+            --accent: #475569; /* Cinza Escuro */
+            --silver-dark: #94a3b8;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --text: #0f172a; /* Texto quase preto */
+            --text-muted: #64748b;
+            --input-bg: #f8fafc;
         }
 
         * {
@@ -32,7 +35,7 @@
         }
 
         body {
-            background: var(--bg-gradient);
+            background: var(--bg-color);
             color: var(--text);
             min-height: 100vh;
             display: flex;
@@ -41,18 +44,28 @@
             padding: 30px 20px;
             font-size: 18px;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Logo fixo no canto superior esquerdo integrado ao fundo branco */
+        .app-logo {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            height: 120px; /* Altere tamanho da imagem */
+            width: auto;
+            object-fit: contain;
+            z-index: 100;
         }
 
         .game-container {
             width: 100%;
             max-width: 1000px;
             background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--card-border);
             border-radius: 24px;
             padding: 40px 45px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(56, 189, 248, 0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
             position: relative;
         }
 
@@ -71,18 +84,16 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Tipografia equilibrada */
+        /* Tipografia */
         h1, h2, h3 {
             font-family: 'Space Grotesk', sans-serif;
             text-align: center;
         }
 
         h1 {
-            font-size: 3.2rem;
-            background: linear-gradient(to right, #38bdf8, #c084fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
+            font-size: 3rem;
+            color: var(--text);
+            margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             font-weight: 800;
@@ -90,10 +101,28 @@
 
         .subtitle {
             text-align: center;
-            color: var(--text-muted);
-            margin-bottom: 35px;
+            color: var(--accent);
+            margin-bottom: 12px;
             font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* Slogan */
+        .slogan-badge {
+            text-align: center;
+            display: block;
+            margin: 0 auto 30px auto;
+            padding: 6px 20px;
+            background: rgba(227, 30, 36, 0.08);
+            border: 1px solid rgba(227, 30, 36, 0.2);
+            border-radius: 50px;
+            color: var(--primary);
+            font-style: italic;
+            font-size: 1.2rem;
             font-weight: 600;
+            letter-spacing: 0.5px;
+            width: 100%;
         }
 
         /* Formulários e Inputs */
@@ -104,9 +133,9 @@
         .input-group label {
             display: block;
             margin-bottom: 8px;
-            color: var(--primary);
+            color: var(--accent);
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             text-transform: uppercase;
             letter-spacing: 0.8px;
         }
@@ -114,10 +143,10 @@
         .input-group input {
             width: 100%;
             padding: 16px 20px;
-            background: rgba(15, 23, 42, 0.75);
-            border: 1px solid var(--card-border);
+            background: var(--input-bg);
+            border: 1px solid #cbd5e1;
             border-radius: 14px;
-            color: #fff;
+            color: var(--text);
             font-size: 1.35rem;
             font-weight: 600;
             transition: all 0.3s;
@@ -126,7 +155,8 @@
         .input-group input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 16px var(--primary-glow);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px var(--primary-glow);
         }
 
         /* Botões */
@@ -149,32 +179,22 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #0284c7, #2563eb);
+            background: var(--primary);
             color: #fff;
-            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+            box-shadow: 0 4px 15px var(--primary-glow);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(37, 99, 235, 0.6);
-        }
-
-        .btn-accent {
-            background: linear-gradient(135deg, #9333ea, #c026d3);
-            color: #fff;
-            box-shadow: 0 4px 20px rgba(147, 51, 234, 0.4);
-        }
-
-        .btn-accent:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(147, 51, 234, 0.6);
+            background: #b91c1c;
+            box-shadow: 0 6px 20px rgba(227, 30, 36, 0.3);
         }
 
         /* Cartão do Jogador */
         .player-turn-card {
             text-align: center;
             padding: 35px 25px;
-            background: rgba(15, 23, 42, 0.55);
+            background: var(--input-bg);
             border-radius: 20px;
             border: 2px dashed var(--primary);
             margin-bottom: 28px;
@@ -190,7 +210,6 @@
             color: var(--primary);
             font-weight: 800;
             margin: 14px 0;
-            text-shadow: 0 0 20px var(--primary-glow);
         }
 
         /* Quiz Interface */
@@ -204,27 +223,27 @@
         }
 
         .badge-player {
-            background: rgba(56, 189, 248, 0.18);
+            background: rgba(227, 30, 36, 0.1);
             color: var(--primary);
             padding: 10px 22px;
             border-radius: 24px;
             font-weight: 800;
             font-size: 1.2rem;
-            border: 1px solid rgba(56, 189, 248, 0.35);
+            border: 1px solid rgba(227, 30, 36, 0.2);
         }
 
         .timer-box {
             display: flex;
             align-items: center;
             gap: 10px;
-            background: rgba(251, 113, 133, 0.18);
+            background: rgba(239, 68, 68, 0.1);
             color: var(--danger);
             padding: 10px 24px;
             border-radius: 24px;
             font-family: 'Space Grotesk', monospace;
             font-size: 1.75rem;
             font-weight: 800;
-            border: 1px solid rgba(251, 113, 133, 0.4);
+            border: 1px solid rgba(239, 68, 68, 0.2);
             animation: pulse 1.5s infinite;
         }
 
@@ -236,7 +255,7 @@
         .module-tag {
             display: inline-block;
             font-size: 1.15rem;
-            color: var(--accent);
+            color: var(--primary);
             text-transform: uppercase;
             font-weight: 800;
             letter-spacing: 1px;
@@ -249,7 +268,7 @@
             margin-bottom: 28px;
             font-weight: 600;
             text-align: left;
-            color: #ffffff;
+            color: var(--text);
         }
 
         .options-grid {
@@ -259,8 +278,8 @@
         }
 
         .option-btn {
-            background: rgba(15, 23, 42, 0.65);
-            border: 1px solid var(--card-border);
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
             border-radius: 16px;
             padding: 18px 22px;
             color: var(--text);
@@ -276,14 +295,14 @@
         }
 
         .option-btn:hover {
-            background: rgba(56, 189, 248, 0.15);
+            background: #fef2f2;
             border-color: var(--primary);
             transform: translateX(6px);
         }
 
         .option-letter {
-            background: rgba(255, 255, 255, 0.15);
-            color: #fff;
+            background: #f1f5f9;
+            color: var(--accent);
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -293,11 +312,12 @@
             font-weight: 800;
             font-size: 1.15rem;
             flex-shrink: 0;
+            transition: all 0.2s ease;
         }
 
         .option-btn:hover .option-letter {
             background: var(--primary);
-            color: #0f172a;
+            color: #fff;
         }
 
         /* Leaderboard / Ranking */
@@ -309,19 +329,20 @@
         }
 
         .ranking-item {
-            background: rgba(15, 23, 42, 0.65);
-            border: 1px solid var(--card-border);
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
             border-radius: 18px;
             padding: 22px 28px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
         }
 
         .ranking-item.pos-1 {
             border-color: var(--warning);
-            background: rgba(251, 191, 36, 0.1);
-            box-shadow: 0 0 25px rgba(251, 191, 36, 0.2);
+            background: #fffbeb;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.15);
         }
 
         .rank-pos {
@@ -361,22 +382,22 @@
         }
 
         .badge-correct {
-            background: rgba(52, 211, 153, 0.2);
-            color: var(--success);
-            border: 1px solid rgba(52, 211, 153, 0.4);
+            background: #d1fae5;
+            color: #059669;
+            border: 1px solid #34d399;
         }
 
         .badge-wrong {
-            background: rgba(251, 113, 133, 0.2);
-            color: var(--danger);
-            border: 1px solid rgba(251, 113, 133, 0.4);
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #f87171;
         }
 
         .rank-time {
             font-family: 'Space Grotesk', monospace;
             font-size: 1.4rem;
             font-weight: 800;
-            color: #fff;
+            color: var(--accent);
         }
 
         /* Gabarito Comentado */
@@ -394,11 +415,14 @@
         }
 
         .feedback-item {
-            background: rgba(15, 23, 42, 0.45);
+            background: var(--input-bg);
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 18px;
-            border-left: 5px solid var(--card-border);
+            border-left: 5px solid #cbd5e1;
+            border-top: 1px solid #e2e8f0;
+            border-right: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
         }
 
         .feedback-item.correct { border-left-color: var(--success); }
@@ -407,7 +431,7 @@
         .feedback-player {
             font-size: 1.25rem;
             font-weight: 800;
-            color: var(--primary);
+            color: var(--text);
             margin-bottom: 8px;
         }
 
@@ -426,15 +450,18 @@
             font-size: 1.05rem;
             line-height: 1.5;
             color: var(--text-muted);
-            background: rgba(0, 0, 0, 0.25);
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
             padding: 14px 16px;
             border-radius: 10px;
             margin-top: 10px;
         }
 
-        @media (max-width: 650px) {
-            .game-container { padding: 25px 20px; }
-            h1 { font-size: 2.2rem; }
+        @media (max-width: 768px) {
+            body { padding-top: 90px; }
+            .app-logo { height: 45px; top: 15px; left: 15px; }
+            .game-container { padding: 30px 20px; }
+            h1 { font-size: 2rem; }
             .question-text { font-size: 1.35rem; }
             .ranking-item { flex-direction: column; align-items: flex-start; gap: 12px; }
             .rank-status { text-align: left; }
@@ -443,12 +470,16 @@
 </head>
 <body>
 
+    <!-- LOGO FORA DO CONTAINER (CANTO SUPERIOR ESQUERDO DA PÁGINA) -->
+    <img src="logo.png" alt="Logo Colégio Espaço Aberto" class="app-logo">
+
     <div class="game-container">
-        
+
         <!-- TELA 1: CADASTRO DOS JOGADORES -->
         <div id="screen-setup" class="screen active">
-            <h1>⚡ InfraGame</h1>
-            <p class="subtitle">O Desafio dos Modais & Infraestrutura Nacional</p>
+            <h1>Científico - SESESC 2026</h1>
+            <p class="subtitle">2º ano - Colégio Espaço Aberto</p>
+            <div class="slogan-badge">“Educação que transforma, conhecimento que impulsiona.”</div>
             
             <form id="form-setup" onsubmit="startGame(event)">
                 <div class="input-group">
@@ -472,6 +503,7 @@
         <div id="screen-ready" class="screen">
             <h1>Preparado?</h1>
             <p class="subtitle">Cada participante responderá a 1 pergunta surpresa.</p>
+            <div class="slogan-badge">“Educação que transforma, conhecimento que impulsiona.”</div>
             
             <div class="player-turn-card">
                 <p>Vez do Participante:</p>
@@ -481,7 +513,7 @@
                 </p>
             </div>
 
-            <button class="btn btn-accent" onclick="startQuestionTurn()">Estou Pronto! Ver Pergunta ⏱️</button>
+            <button class="btn btn-primary" onclick="startQuestionTurn()">Estou Pronto! Ver Pergunta ⏱️</button>
         </div>
 
         <!-- TELA 3: PERGUNTA & CRONÔMETRO -->
@@ -506,6 +538,7 @@
         <div id="screen-ranking" class="screen">
             <h1>🏆 Ranking Final</h1>
             <p class="subtitle">Classificação por Respostas Corretas e Menor Tempo</p>
+            <div class="slogan-badge">“Educação que transforma, conhecimento que impulsiona.”</div>
 
             <div class="ranking-list" id="ranking-container">
                 <!-- Ranking injetado via JS -->
@@ -524,7 +557,6 @@
     </div>
 
     <script>
-        // BASE DE DADOS DE PERGUNTAS E GABARITO
         const questionsDatabase = [
             {
                 id: 1,
@@ -632,23 +664,19 @@
             }
         ];
 
-        // ESTADO DO JOGO
         let players = [];
         let selectedQuestions = [];
         let currentTurnIndex = 0;
         let gameResults = [];
         
-        // CRONÔMETRO
         let timerInterval = null;
         let startTime = 0;
 
-        // NAVEGAÇÃO
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
         }
 
-        // INICIAR JOGO
         function startGame(e) {
             e.preventDefault();
             
@@ -668,7 +696,6 @@
             preparePlayerTurn();
         }
 
-        // PREPARAR TURNO
         function preparePlayerTurn() {
             if (currentTurnIndex >= players.length) {
                 renderRanking();
@@ -679,7 +706,6 @@
             showScreen('screen-ready');
         }
 
-        // INICIAR PERGUNTA + CRONÔMETRO
         function startQuestionTurn() {
             showScreen('screen-quiz');
 
@@ -707,7 +733,6 @@
             startTimer();
         }
 
-        // CRONÔMETRO
         function startTimer() {
             startTime = performance.now();
             const timerDisplay = document.getElementById('timer-display');
@@ -727,7 +752,6 @@
             return (endTime - startTime) / 1000;
         }
 
-        // PROCESSAR RESPOSTA
         function handleAnswer(selectedLetter) {
             const timeTaken = stopTimer();
             const currentQuestion = selectedQuestions[currentTurnIndex];
@@ -746,7 +770,6 @@
             preparePlayerTurn();
         }
 
-        // RANKING
         function renderRanking() {
             showScreen('screen-ranking');
 
@@ -782,7 +805,6 @@
                 rankingContainer.appendChild(item);
             });
 
-            // Gabarito Comentado
             const gabaritoContainer = document.getElementById('gabarito-container');
             gabaritoContainer.innerHTML = '';
 
@@ -805,7 +827,6 @@
             });
         }
 
-        // REINICIAR
         function resetGame() {
             document.getElementById('form-setup').reset();
             showScreen('screen-setup');
