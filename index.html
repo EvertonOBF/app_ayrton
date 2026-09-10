@@ -11,7 +11,6 @@
     
     <style>
         :root {
-            /* Paleta extraída da marca SECESC */
             --secesc-red: #d91b24;
             --secesc-orange: #f96332;
             --secesc-dark: #1b2028;
@@ -35,7 +34,7 @@
             font-family: 'Outfit', sans-serif;
         }
 
-        /* Fundo Animado com Cores e Polígonos Geométricos do SECESC */
+        /* Fundo Animado com Cores do SECESC */
         body {
             min-height: 100vh;
             display: flex;
@@ -56,7 +55,7 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Camada de Polígonos e Formas Geométricas em Movimento */
+        /* Polígonos Geométricos em Movimento */
         .bg-shapes {
             position: fixed;
             top: 0;
@@ -123,7 +122,7 @@
             50% { transform: translateY(-35px) rotate(15deg) scale(1.08); }
         }
 
-        /* Logo da Instituição no topo externo (canto superior esquerdo) */
+        /* Logo da Instituição (Canto Superior Esquerdo Externo) */
         .app-logo {
             position: fixed;
             top: 35px;
@@ -135,7 +134,7 @@
             filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
         }
 
-        /* Cartão Central (Efeito Vidro / Glassmorphism) */
+        /* Cartão Central (Glassmorphism) */
         .game-container {
             width: 100%;
             max-width: 950px;
@@ -147,19 +146,6 @@
             box-shadow: 0 20px 50px rgba(27, 32, 40, 0.12);
             position: relative;
             z-index: 10;
-        }
-
-        /* Logo/Selo do SECESC no canto superior direito interno do Cartão */
-        .card-corner-logo {
-            position: absolute;
-            top: 25px;
-            right: 25px;
-            width: 95px; /* Altere aqui o tamanho da imagem */
-            height: 95px;
-            object-fit: contain;
-            border-radius: 50%;
-            z-index: 5;
-            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1));
         }
 
         .screen {
@@ -186,8 +172,6 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             font-weight: 800;
-            padding-right: 50px; /* Evita sobreposição com o selo */
-            padding-left: 50px;
         }
 
         .subtitle {
@@ -248,7 +232,7 @@
             box-shadow: 0 0 0 4px rgba(249, 99, 50, 0.15);
         }
 
-        /* Botões com o Gradiente SECESC */
+        /* Botões */
         .btn {
             width: 100%;
             padding: 18px 24px;
@@ -279,7 +263,7 @@
             filter: brightness(1.05);
         }
 
-        /* Cartão do Jogador */
+        /* Cartão de Transição */
         .player-turn-card {
             text-align: center;
             padding: 35px 25px;
@@ -545,12 +529,12 @@
         @media (max-width: 768px) {
             body { padding-top: 100px; }
             .app-logo { height: 50px; top: 15px; left: 15px; }
-            .card-corner-logo { width: 60px; height: 60px; top: 15px; right: 15px; }
             .game-container { padding: 25px 18px; }
-            h1 { font-size: 1.8rem; padding-left: 0; padding-right: 0; margin-top: 20px; }
+            h1 { font-size: 1.8rem; }
             .question-text { font-size: 1.3rem; }
             .ranking-item { flex-direction: column; align-items: flex-start; gap: 12px; }
             .rank-status { text-align: left; }
+            .quiz-header { flex-direction: column; gap: 12px; align-items: flex-start; }
         }
     </style>
 </head>
@@ -568,9 +552,6 @@
     <img src="logo.png" alt="Logo Colégio Espaço Aberto" class="app-logo">
 
     <div class="game-container">
-
-        <!-- LOGO SECESC NO CANTO SUPERIOR DIREITO DO CARTÃO -->
-        <img src="secesc.png" alt="Selo SECESC" class="card-corner-logo">
 
         <!-- TELA 1: CADASTRO DOS JOGADORES -->
         <div id="screen-setup" class="screen active">
